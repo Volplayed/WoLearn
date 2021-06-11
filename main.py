@@ -77,28 +77,44 @@ def deleteWord(words, lastNum):
             ui.progressBar.setMaximum(ui.progressBar.maximum() - 1)
 
 def startPlay(words):
-    ui.progressBar.setValue(0)
     playedWordsList = []
-    ui.textEdit.setVisible(False)
-    ui.frame.setVisible(False)
-    ui.pushButton_5.setVisible(True)
-    lt = list(words.items())
-    for a in range(len(lt)):
-        playedWordsList.append([lt[a][1][0], lt[a][1][2]])
+    if ui.pushButton_4.text() == 'Почати':
+        ui.progressBar.setValue(0)
+        ui.pushButton_4.setText('Зупинити')
+
+        ui.textEdit.setVisible(False)
+        ui.frame.setVisible(False)
+        ui.pushButton_5.setVisible(True)
+        lt = list(words.items())
+        for a in range(len(lt)):
+            playedWordsList.append([lt[a][1][0], lt[a][1][2]])
 
 
-    if ui.radioButton.isChecked():
-        type = 'wtt'
 
-    elif ui.radioButton_2.isChecked():
-        type = 'ttw'
+        if ui.radioButton.isChecked():
+            type = 'wtt'
 
-    elif ui.radioButton_3.isChecked():
-        type = 'r'
-    word = [None]
-    rightAnswer = [None]
-    word[0], rightAnswer[0] = setNewWord(playedWordsList, type)
-    ui.pushButton_5.clicked.connect(lambda: checkIsTheAnswerRight(rightAnswer, playedWordsList, word, type))
+        elif ui.radioButton_2.isChecked():
+            type = 'ttw'
+
+        elif ui.radioButton_3.isChecked():
+            type = 'r'
+        word = [None]
+        rightAnswer = [None]
+        word[0], rightAnswer[0] = setNewWord(playedWordsList, type)
+        ui.pushButton_5.clicked.connect(lambda: checkIsTheAnswerRight(rightAnswer, playedWordsList, word, type))
+        return
+    else:
+        ui.textEdit.setVisible(True)
+        ui.frame.setVisible(True)
+        ui.pushButton_5.setVisible(False)
+        ui.lineEdit_4.setText('')
+        ui.lineEdit_3.setText('')
+        ui.pushButton_5.disconnect()
+        ui.pushButton_4.setText('Почати')
+
+
+
 
 def setNewWord(wordList, type):
     rightAnswer = [None]
@@ -124,6 +140,7 @@ def setNewWord(wordList, type):
             elif a == 1:
                 ui.lineEdit_3.setText(word[0][1])
                 rightAnswer[0] = word[0][0]
+
         return word[0], rightAnswer[0]
     else:
         ui.textEdit.setVisible(True)
@@ -131,6 +148,7 @@ def setNewWord(wordList, type):
         ui.pushButton_5.setVisible(False)
         ui.lineEdit_4.setText('')
         ui.lineEdit_3.setText('')
+        ui.pushButton_4.setText('Почати')
         return word[0], rightAnswer[0]
 
 def checkIsTheAnswerRight(rightAnswer, wordlist, word, type):

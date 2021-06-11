@@ -57,23 +57,24 @@ def changeWord(words):
 
 def deleteWord(words, lastNum):
     wordNum = ui.spinBox.text()
-    del words[str(wordNum)]
-    a = 1
-    newWords = {}
-    for (key, value) in words.items():
-        newWords[str(a)] = value
-        a += 1
-    words.clear()
-    for i in range(len(newWords)):
-        words[str(i + 1)] = newWords[str(i + 1)]
-    convertToTextEditText(words)
-    lastNum[0] -= 1
-    ui.spinBox.setMaximum(lastNum[0] - 1)
-    if ui.spinBox.maximum() < 1:
-        ui.spinBox.setMaximum(1)
-        ui.spinBox.setMinimum(1)
-    if ui.progressBar.maximum() > 1:
-        ui.progressBar.setMaximum(ui.progressBar.maximum() - 1)
+    if lastNum[0] > 1:
+        del words[str(wordNum)]
+        a = 1
+        newWords = {}
+        for (key, value) in words.items():
+            newWords[str(a)] = value
+            a += 1
+        words.clear()
+        for i in range(len(newWords)):
+            words[str(i + 1)] = newWords[str(i + 1)]
+        convertToTextEditText(words)
+        lastNum[0] -= 1
+        ui.spinBox.setMaximum(lastNum[0] - 1)
+        if ui.spinBox.maximum() < 1:
+            ui.spinBox.setMaximum(1)
+            ui.spinBox.setMinimum(1)
+        if ui.progressBar.maximum() > 1:
+            ui.progressBar.setMaximum(ui.progressBar.maximum() - 1)
 
 def startPlay(words):
     ui.progressBar.setValue(0)

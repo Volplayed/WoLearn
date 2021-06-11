@@ -72,7 +72,8 @@ def deleteWord(words, lastNum):
     if ui.spinBox.maximum() < 1:
         ui.spinBox.setMaximum(1)
         ui.spinBox.setMinimum(1)
-    ui.progressBar.setMaximum(ui.progressBar.maximum() - 1)
+    if ui.progressBar.maximum() > 1:
+        ui.progressBar.setMaximum(ui.progressBar.maximum() - 1)
 
 def startPlay(words):
     ui.progressBar.setValue(0)

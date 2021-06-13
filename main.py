@@ -1,4 +1,4 @@
-import time
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 from ui import Ui_MainWindow
 from tkinter import filedialog
@@ -188,6 +188,10 @@ def saveFile(words):
         file.write(line)
     file.close()
 
+def newFile(words, lastWodNum):
+    words.clear()
+    lastWodNum[0] = 1
+    ui.textEdit.setText('')
 
 ui.pushButton.clicked.connect(lambda: addWord(lastWordNum, words))
 ui.pushButton_2.clicked.connect(lambda: changeWord(words))
@@ -195,5 +199,6 @@ ui.pushButton_3.clicked.connect(lambda: deleteWord(words, lastWordNum))
 ui.pushButton_4.clicked.connect(lambda: startPlay(words))
 ui.actionOpen.triggered.connect(lambda: openFile(words, lastWordNum))
 ui.actionSave.triggered.connect(lambda: saveFile(words))
+ui.actionNew.triggered.connect(lambda: newFile(words, lastWordNum))
 
 sys.exit(app.exec_())

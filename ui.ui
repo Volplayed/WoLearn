@@ -371,26 +371,44 @@
     <property name="title">
      <string>FIle</string>
     </property>
-    <addaction name="actionNew"/>
-    <addaction name="actionSave"/>
+    <widget class="QMenu" name="menuNew">
+     <property name="title">
+      <string>New</string>
+     </property>
+     <addaction name="actionDon_t_save"/>
+     <addaction name="actionSave_2"/>
+    </widget>
+    <addaction name="menuNew"/>
     <addaction name="actionOpen"/>
+    <addaction name="actionSaveAs"/>
+    <addaction name="actionSave"/>
    </widget>
    <addaction name="menuFIle"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionNew">
+  <action name="actionOpen">
    <property name="text">
-    <string>New</string>
+    <string>Open</string>
+   </property>
+  </action>
+  <action name="actionSaveAs">
+   <property name="text">
+    <string>Save As</string>
+   </property>
+  </action>
+  <action name="actionDon_t_save">
+   <property name="text">
+    <string>Don`t save</string>
+   </property>
+  </action>
+  <action name="actionSave_2">
+   <property name="text">
+    <string>Save</string>
    </property>
   </action>
   <action name="actionSave">
    <property name="text">
     <string>Save</string>
-   </property>
-  </action>
-  <action name="actionOpen">
-   <property name="text">
-    <string>Open</string>
    </property>
   </action>
  </widget>

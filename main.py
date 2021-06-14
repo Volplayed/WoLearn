@@ -16,6 +16,7 @@ ui.pushButton_5.setCheckable(False)
 ui.progressBar.setMaximum(1)
 ui.progressBar.setValue(0)
 lastWordNum = [1]
+currentOpenedFile = [None]
 words = {}
 
 def addWord(lastWordNum, words):
@@ -163,8 +164,10 @@ def checkIsTheAnswerRight(rightAnswer, wordlist, word, type):
     else:
         ui.lineEdit_4.setText("Неправильно")
 
-def openFile(words, lastWordNum):
-    file = open(filedialog.askopenfilename(), 'r')
+def openFile(words, lastWordNum, openedFile):
+    filename = filedialog.askopenfilename()
+    file = open(filename, 'r')
+    openedFile[0] = filename
     words.clear()
     ui.textEdit.clear()
     lastWordNum[0] = 0
@@ -180,25 +183,56 @@ def openFile(words, lastWordNum):
     convertToTextEditText(words)
     file.close()
 
-def saveFile(words):
-    file = open(filedialog.asksaveasfilename(), 'w')
+def saveAsFile(words, openedFile):
+    filename = filedialog.asksaveasfilename()
+    file = open(filename, 'w')
+    openedFile[0] = filename
     for i in range(len(words)):
         value = words[str(i+1)]
         line = f'{value[0]} - {value[2]}\n'
         file.write(line)
     file.close()
 
-def newFile(words, lastWodNum):
+def saveFile(words, openedFile):
+    file = open(openedFile[0], 'w')
+    for i in range(len(words)):
+        value = words[str(i+1)]
+        line = f'{value[0]} - {value[2]}\n'
+        file.write(line)
+    file.close()
+
+def newFile(words, lastWordNum, openedFile):
     words.clear()
-    lastWodNum[0] = 1
+    lastWordNum[0] = 1
+    openedFile[0] = None
+    ui.textEdit.setVisible(True)
+    ui.frame.setVisible(True)
+    ui.pushButton_5.setVisible(False)
+    ui.lineEdit_4.setText('')
+    ui.lineEdit_3.setText('')
+    ui.pushButton_5.disconnect()
+    ui.pushButton_4.setText('Почати')
+    ui.progressBar.setMaximum(1)
     ui.textEdit.setText('')
+
+def saveAndNewFile(words, lastWordNum, openedFile):
+    if openedFile[0] == None:
+        saveAsFile(words, openedFile)
+        newFile(words, lastWordNum, openedFile)
+
+    else:
+        saveFile(words, currentOpenedFile)
+        newFile(words, lastWordNum, openedFile)
 
 ui.pushButton.clicked.connect(lambda: addWord(lastWordNum, words))
 ui.pushButton_2.clicked.connect(lambda: changeWord(words))
 ui.pushButton_3.clicked.connect(lambda: deleteWord(words, lastWordNum))
 ui.pushButton_4.clicked.connect(lambda: startPlay(words))
-ui.actionOpen.triggered.connect(lambda: openFile(words, lastWordNum))
-ui.actionSave.triggered.connect(lambda: saveFile(words))
-ui.actionNew.triggered.connect(lambda: newFile(words, lastWordNum))
+ui.actionOpen.triggered.connect(lambda: openFile(words, lastWordNum, currentOpenedFile))
+ui.actionSaveAs.triggered.connect(lambda: saveAsFile(words, currentOpenedFile))
+ui.actionSave.triggered.connect(lambda: saveFile(words, currentOpenedFile))
+ui.actionDon_t_save.triggered.connect(lambda: newFile(words, lastWordNum, currentOpenedFile))
+ui.actionSave_2.triggered.connect(lambda: saveAndNewFile(words, lastWordNum, currentOpenedFile))
+
 
 sys.exit(app.exec_())

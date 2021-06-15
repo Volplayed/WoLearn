@@ -111,8 +111,11 @@ def startPlay(words):
         ui.pushButton_5.setVisible(False)
         ui.lineEdit_4.setText('')
         ui.lineEdit_3.setText('')
-        ui.pushButton_5.disconnect()
         ui.pushButton_4.setText('Почати')
+        try:
+            ui.pushButton_5.disconnect()
+        except:
+            pass
 
 
 
@@ -126,22 +129,25 @@ def setNewWord(wordList, type):
         if type == 'wtt':
             ui.lineEdit_3.setText(word[0][0])
             rightAnswer[0] = word[0][1]
+            rightAnswer[0] = multiplyAnswersSet(rightAnswer)
 
         elif type == 'ttw':
             ui.lineEdit_3.setText(word[0][1])
             rightAnswer[0] = word[0][0]
+            rightAnswer[0] = multiplyAnswersSet(rightAnswer)
 
         elif type == 'r':
             a = randint(0, 2)
             if a == 0:
                 ui.lineEdit_3.setText(word[0][0])
                 rightAnswer[0] = word[0][1]
+                rightAnswer[0] = multiplyAnswersSet(rightAnswer)
 
 
             elif a == 1:
                 ui.lineEdit_3.setText(word[0][1])
                 rightAnswer[0] = word[0][0]
-
+                rightAnswer[0] = multiplyAnswersSet(rightAnswer)
         return word[0], rightAnswer[0]
     else:
         ui.textEdit.setVisible(True)
@@ -152,10 +158,24 @@ def setNewWord(wordList, type):
         ui.pushButton_4.setText('Почати')
         return word[0], rightAnswer[0]
 
-def checkIsTheAnswerRight(rightAnswer, wordlist, word, type):
+def multiplyAnswersSet(rightAnswer):
+    lt = rightAnswer[0]
+    if ',' in lt:
+        comletedList = []
+        commaAmount = lt.count(',')
+        for i in range(commaAmount):
+            commaIndex = lt.index(',')
+            a = lt[:commaIndex]
+            lt = lt[commaIndex + 2:]
+            comletedList.append(a.capitalize())
+        comletedList.append(lt.capitalize())
+        return comletedList
+    else:
+        return rightAnswer[0]
 
+def checkIsTheAnswerRight(rightAnswer, wordlist, word, type):
     writtenWord = ui.lineEdit_4.text()
-    if writtenWord.capitalize() == rightAnswer[0].capitalize():
+    if writtenWord.capitalize() in rightAnswer[0]:
         ui.progressBar.setValue(ui.progressBar.value() + 1)
         if word[0] in wordlist:
             wordlist.pop(wordlist.index(word[0]))
@@ -174,12 +194,14 @@ def openFile(words, lastWordNum, openedFile):
     counter = 1
     for line in file:
         lt = line.split()
-        if len(lt) == 3:
-            words[str(counter)] = [lt[0].capitalize(), '-', lt[2].capitalize(), '\n']
+        if '-' in line:
+            defIndex = lt.index('-')
+            word = ' '.join(lt[:defIndex])
+            translation = ' '.join(lt[defIndex + 1:])
+            words[str(counter)] = [word.capitalize(), '-', translation.capitalize(), '\n']
             counter += 1
     lastWordNum[0] = counter
     ui.progressBar.setMaximum(counter - 1)
-    print(words)
     convertToTextEditText(words)
     file.close()
 
@@ -210,10 +232,13 @@ def newFile(words, lastWordNum, openedFile):
     ui.pushButton_5.setVisible(False)
     ui.lineEdit_4.setText('')
     ui.lineEdit_3.setText('')
-    ui.pushButton_5.disconnect()
     ui.pushButton_4.setText('Почати')
     ui.progressBar.setMaximum(1)
     ui.textEdit.setText('')
+    try:
+        ui.pushButton_5.disconnect()
+    except:
+        pass
 
 def saveAndNewFile(words, lastWordNum, openedFile):
     if openedFile[0] == None:

@@ -59,6 +59,7 @@
 	font-weight: bold;
 	font-size: 18px;
 	background-color: rgb(85, 87, 83);
+	color: white;
 }
 
 .QRadioButton {
@@ -383,7 +384,23 @@
     <addaction name="actionSaveAs"/>
     <addaction name="actionSave"/>
    </widget>
+   <widget class="QMenu" name="menuOptions">
+    <property name="title">
+     <string>Options</string>
+    </property>
+    <widget class="QMenu" name="menuLaunguage">
+     <property name="title">
+      <string>Launguage</string>
+     </property>
+     <addaction name="actionEnglish"/>
+     <addaction name="actionSpanish"/>
+     <addaction name="actionUkrainian"/>
+     <addaction name="actionFrench"/>
+    </widget>
+    <addaction name="menuLaunguage"/>
+   </widget>
    <addaction name="menuFIle"/>
+   <addaction name="menuOptions"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionOpen">
@@ -409,6 +426,26 @@
   <action name="actionSave">
    <property name="text">
     <string>Save</string>
+   </property>
+  </action>
+  <action name="actionEnglish">
+   <property name="text">
+    <string>English</string>
+   </property>
+  </action>
+  <action name="actionSpanish">
+   <property name="text">
+    <string>Spanish</string>
+   </property>
+  </action>
+  <action name="actionUkrainian">
+   <property name="text">
+    <string>Ukrainian</string>
+   </property>
+  </action>
+  <action name="actionFrench">
+   <property name="text">
+    <string>French</string>
    </property>
   </action>
  </widget>

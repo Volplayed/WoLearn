@@ -11,13 +11,89 @@ MainWindow = QtWidgets.QMainWindow()
 ui = Ui_MainWindow()
 ui.setupUi(MainWindow)
 MainWindow.show()
+
 ui.pushButton_5.setVisible(False)
 ui.pushButton_5.setCheckable(False)
 ui.progressBar.setMaximum(1)
 ui.progressBar.setValue(0)
+
 lastWordNum = [1]
 currentOpenedFile = [None]
 words = {}
+programText = [['Новий', 'Зберегти', 'Зберегти як', 'Не зберігати', 'Відкрити', 'Налаштування', 'Мова',
+                           "Слово", "Переклад", "Номер слова", "Додати", "Змінити", "Видалити", "Переклад за словом",
+                           "Слово за перекладом", "Випадково", "Почати", "Зупинити", "Неправильно", 'Прийняти', 'Файл']]
+
+def changeLang(programText, lang):
+    file = open('lang.txt', 'w')
+    file.write(lang.upper())
+    file.close()
+    loadLanguange(programText, lang)
+
+def loadLanguange(programTextList, lang):
+
+
+    if lang.upper() == 'UA':
+        programTextList[0] = ['Новий', 'Зберегти', 'Зберегти як', 'Не зберігати', 'Відкрити', 'Налаштування', 'Мова',
+                           "Слово", "Переклад", "Номер слова", "Додати", "Змінити", "Видалити", "Переклад за словом",
+                           "Слово за перекладом", "Випадково", "Почати", "Зупинити", "Неправильно", 'Прийняти', 'Файл']
+
+        translateUi(programTextList)
+
+
+    elif lang.upper() == 'EN':
+        programTextList[0] = ['New', 'Save', 'Save as', 'Don`t save', 'Open', 'Options', 'Language',
+                           "Word", "Translation", "Word number", "Add", "Change", "Delete", "Word to translation",
+                           "Translation to word", "Random", "Start", "Stop", "Wrong", 'Accept', 'File']
+
+        translateUi(programTextList)
+
+    elif lang.upper() == 'ES':
+        programTextList[0] = ['Nuevo', 'Guardar', 'Guardar como', 'No guardes', 'Abierto', 'Opciones', 'Idioma',
+                           "Palabra", "Traduccion", "Numero de palabra", "Agregar", "Cambio", "Eliminar", "Palabra a traducir",
+                           "Traduccion a palabra", "Aleatorio", "Comienzo", "Detener", "Equivocado", 'Aceptar', 'Expediente']
+
+        translateUi(programTextList)
+
+    elif lang.upper() == 'FR':
+        programTextList[0] = ['Nouveau', 'Enregister', 'Enregister sous', 'Ne pas enregister', 'Ouvert', 'Options', 'Langue',
+                           "Mot", "Traduction", "Numero de mot", "Ajounter", "Changer", "Effacer", "Mot a traduction",
+                           "Traduction a mot", "Aleatoire", "Demarrer", "Arreter", "Tort", 'J`accepte', 'Deposer']
+
+        translateUi(programTextList)
+
+
+
+def translateUi(programText):
+    ui.menuNew.setTitle(programText[0][0])
+    ui.actionSave.setText(programText[0][1])
+    ui.actionSave_2.setText(programText[0][1])
+    ui.actionSaveAs.setText(programText[0][2])
+    ui.actionDon_t_save.setText(programText[0][3])
+    ui.actionOpen.setText(programText[0][4])
+    ui.menuOptions.setTitle(programText[0][5])
+    ui.menuLaunguage.setTitle(programText[0][6])
+    ui.menuFIle.setTitle(programText[0][20])
+
+    ui.label.setText(programText[0][7])
+    ui.label_2.setText(programText[0][8])
+    ui.label_3.setText(programText[0][9])
+    ui.pushButton.setText(programText[0][10])
+    ui.pushButton_2.setText(programText[0][11])
+    ui.pushButton_3.setText(programText[0][12])
+
+    ui.radioButton.setText(programText[0][13])
+    ui.radioButton_2.setText(programText[0][14])
+    ui.radioButton_3.setText(programText[0][15])
+    ui.pushButton_4.setText(programText[0][16])
+    ui.pushButton_5.setText(programText[0][19])
+
+
+file = open('lang.txt', 'r')
+language = file.readline()
+file.close()
+loadLanguange(programText, language)
+
 
 def addWord(lastWordNum, words):
     word = ui.lineEdit.text()
@@ -77,11 +153,11 @@ def deleteWord(words, lastNum):
         if ui.progressBar.maximum() > 1:
             ui.progressBar.setMaximum(ui.progressBar.maximum() - 1)
 
-def startPlay(words):
+def startPlay(words, programText):
     playedWordsList = []
-    if ui.pushButton_4.text() == 'Почати':
+    if ui.pushButton_4.text() == programText[0][16]:
         ui.progressBar.setValue(0)
-        ui.pushButton_4.setText('Зупинити')
+        ui.pushButton_4.setText(programText[0][17])
 
         ui.textEdit.setVisible(False)
         ui.frame.setVisible(False)
@@ -102,8 +178,8 @@ def startPlay(words):
             type = 'r'
         word = [None]
         rightAnswer = [None]
-        word[0], rightAnswer[0] = setNewWord(playedWordsList, type)
-        ui.pushButton_5.clicked.connect(lambda: checkIsTheAnswerRight(rightAnswer, playedWordsList, word, type))
+        word[0], rightAnswer[0] = setNewWord(playedWordsList, type, programText)
+        ui.pushButton_5.clicked.connect(lambda: checkIsTheAnswerRight(rightAnswer, playedWordsList, word, type, programText))
         return
     else:
         ui.textEdit.setVisible(True)
@@ -111,7 +187,7 @@ def startPlay(words):
         ui.pushButton_5.setVisible(False)
         ui.lineEdit_4.setText('')
         ui.lineEdit_3.setText('')
-        ui.pushButton_4.setText('Почати')
+        ui.pushButton_4.setText(programText[0][16])
         try:
             ui.pushButton_5.disconnect()
         except:
@@ -120,7 +196,7 @@ def startPlay(words):
 
 
 
-def setNewWord(wordList, type):
+def setNewWord(wordList, type, programText):
     rightAnswer = [None]
     word = [None]
     if len(wordList) > 0:
@@ -128,25 +204,25 @@ def setNewWord(wordList, type):
         word[0] = wordList[randint(0, len(wordList))]
         if type == 'wtt':
             ui.lineEdit_3.setText(word[0][0])
-            rightAnswer[0] = word[0][1]
+            rightAnswer[0] = [word[0][1]]
             rightAnswer[0] = multiplyAnswersSet(rightAnswer)
 
         elif type == 'ttw':
             ui.lineEdit_3.setText(word[0][1])
-            rightAnswer[0] = word[0][0]
+            rightAnswer[0] = [word[0][0]]
             rightAnswer[0] = multiplyAnswersSet(rightAnswer)
 
         elif type == 'r':
             a = randint(0, 2)
             if a == 0:
                 ui.lineEdit_3.setText(word[0][0])
-                rightAnswer[0] = word[0][1]
+                rightAnswer[0] = [word[0][1]]
                 rightAnswer[0] = multiplyAnswersSet(rightAnswer)
 
 
             elif a == 1:
                 ui.lineEdit_3.setText(word[0][1])
-                rightAnswer[0] = word[0][0]
+                rightAnswer[0] = [word[0][0]]
                 rightAnswer[0] = multiplyAnswersSet(rightAnswer)
         return word[0], rightAnswer[0]
     else:
@@ -155,7 +231,7 @@ def setNewWord(wordList, type):
         ui.pushButton_5.setVisible(False)
         ui.lineEdit_4.setText('')
         ui.lineEdit_3.setText('')
-        ui.pushButton_4.setText('Почати')
+        ui.pushButton_4.setText(programText[0][16])
         return word[0], rightAnswer[0]
 
 def multiplyAnswersSet(rightAnswer):
@@ -173,16 +249,16 @@ def multiplyAnswersSet(rightAnswer):
     else:
         return rightAnswer[0]
 
-def checkIsTheAnswerRight(rightAnswer, wordlist, word, type):
+def checkIsTheAnswerRight(rightAnswer, wordlist, word, type, programText):
     writtenWord = ui.lineEdit_4.text()
     if writtenWord.capitalize() in rightAnswer[0]:
         ui.progressBar.setValue(ui.progressBar.value() + 1)
         if word[0] in wordlist:
             wordlist.pop(wordlist.index(word[0]))
-            word[0], rightAnswer[0] = setNewWord(wordlist, type)
+            word[0], rightAnswer[0] = setNewWord(wordlist, type, programText)
 
     else:
-        ui.lineEdit_4.setText("Неправильно")
+        ui.lineEdit_4.setText(programText[0][18])
 
 def openFile(words, lastWordNum, openedFile):
     filename = filedialog.askopenfilename()
@@ -223,7 +299,7 @@ def saveFile(words, openedFile):
         file.write(line)
     file.close()
 
-def newFile(words, lastWordNum, openedFile):
+def newFile(words, lastWordNum, openedFile, programText):
     words.clear()
     lastWordNum[0] = 1
     openedFile[0] = None
@@ -232,7 +308,7 @@ def newFile(words, lastWordNum, openedFile):
     ui.pushButton_5.setVisible(False)
     ui.lineEdit_4.setText('')
     ui.lineEdit_3.setText('')
-    ui.pushButton_4.setText('Почати')
+    ui.pushButton_4.setText(programText[0][16])
     ui.progressBar.setMaximum(1)
     ui.textEdit.setText('')
     try:
@@ -240,24 +316,32 @@ def newFile(words, lastWordNum, openedFile):
     except:
         pass
 
-def saveAndNewFile(words, lastWordNum, openedFile):
+def saveAndNewFile(words, lastWordNum, openedFile, programText):
     if openedFile[0] == None:
         saveAsFile(words, openedFile)
-        newFile(words, lastWordNum, openedFile)
+        newFile(words, lastWordNum, openedFile, programText)
 
     else:
         saveFile(words, currentOpenedFile)
-        newFile(words, lastWordNum, openedFile)
+        newFile(words, lastWordNum, openedFile, programText)
 
 ui.pushButton.clicked.connect(lambda: addWord(lastWordNum, words))
 ui.pushButton_2.clicked.connect(lambda: changeWord(words))
 ui.pushButton_3.clicked.connect(lambda: deleteWord(words, lastWordNum))
-ui.pushButton_4.clicked.connect(lambda: startPlay(words))
+ui.pushButton_4.clicked.connect(lambda: startPlay(words, programText))
 ui.actionOpen.triggered.connect(lambda: openFile(words, lastWordNum, currentOpenedFile))
 ui.actionSaveAs.triggered.connect(lambda: saveAsFile(words, currentOpenedFile))
 ui.actionSave.triggered.connect(lambda: saveFile(words, currentOpenedFile))
-ui.actionDon_t_save.triggered.connect(lambda: newFile(words, lastWordNum, currentOpenedFile))
-ui.actionSave_2.triggered.connect(lambda: saveAndNewFile(words, lastWordNum, currentOpenedFile))
+ui.actionDon_t_save.triggered.connect(lambda: newFile(words, lastWordNum, currentOpenedFile, programText))
+ui.actionSave_2.triggered.connect(lambda: saveAndNewFile(words, lastWordNum, currentOpenedFile, programText))
+
+
+##Lang change
+ui.actionEnglish.triggered.connect(lambda: changeLang(programText, 'EN'))
+ui.actionUkrainian.triggered.connect(lambda: changeLang(programText, 'UA'))
+ui.actionSpanish.triggered.connect(lambda: changeLang(programText, 'ES'))
+ui.actionFrench.triggered.connect(lambda: changeLang(programText, 'FR'))
+
 
 
 sys.exit(app.exec_())

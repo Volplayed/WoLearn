@@ -236,13 +236,13 @@ def setNewWord(wordList, type, programText):
 
 def multiplyAnswersSet(rightAnswer):
     lt = rightAnswer[0]
-    if ',' in lt:
+    if ',' in lt[0]:
         comletedList = []
-        commaAmount = lt.count(',')
+        commaAmount = lt[0].count(',')
         for i in range(commaAmount):
-            commaIndex = lt.index(',')
-            a = lt[:commaIndex]
-            lt = lt[commaIndex + 2:]
+            commaIndex = lt[0].index(',')
+            a = lt[0][:commaIndex]
+            lt = lt[0][commaIndex + 2:]
             comletedList.append(a.capitalize())
         comletedList.append(lt.capitalize())
         return comletedList

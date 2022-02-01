@@ -262,24 +262,28 @@ def checkIsTheAnswerRight(rightAnswer, wordlist, word, type, programText):
 
 def openFile(words, lastWordNum, openedFile):
     filename = filedialog.askopenfilename()
-    file = open(filename, 'r')
-    openedFile[0] = filename
-    words.clear()
-    ui.textEdit.clear()
-    lastWordNum[0] = 0
-    counter = 1
-    for line in file:
-        lt = line.split()
-        if '-' in line:
-            defIndex = lt.index('-')
-            word = ' '.join(lt[:defIndex])
-            translation = ' '.join(lt[defIndex + 1:])
-            words[str(counter)] = [word.capitalize(), '-', translation.capitalize(), '\n']
-            counter += 1
-    lastWordNum[0] = counter
-    ui.progressBar.setMaximum(counter - 1)
-    convertToTextEditText(words)
-    file.close()
+    try:
+        file = open(filename, 'r')
+        openedFile[0] = filename
+        words.clear()
+        ui.textEdit.clear()
+        lastWordNum[0] = 0
+        counter = 1
+        for line in file:
+            lt = line.split()
+            if '-' in line:
+                defIndex = lt.index('-')
+                word = ' '.join(lt[:defIndex])
+                translation = ' '.join(lt[defIndex + 1:])
+                words[str(counter)] = [word.capitalize(), '-', translation.capitalize(), '\n']
+                counter += 1
+        lastWordNum[0] = counter
+        ui.progressBar.setMaximum(counter - 1)
+        convertToTextEditText(words)
+        file.close()
+    
+    except:
+        pass
 
 def saveAsFile(words, openedFile):
     filename = filedialog.asksaveasfilename()

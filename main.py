@@ -286,7 +286,7 @@ def openFile(words, lastWordNum, openedFile):
         pass
 
 def saveAsFile(words, openedFile):
-    filename = filedialog.asksaveasfilename()
+    filename = filedialog.asksaveasfilename(defaultextension='.wll', filetypes=[("wll", '*.wll')])
     file = open(filename, 'w')
     openedFile[0] = filename
     for i in range(len(words)):

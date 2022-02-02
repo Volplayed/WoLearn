@@ -1,5 +1,5 @@
 # WoLearn
-Make learning vocabulary easier. Add words, save and load lists, test yoursself with 3 types of texting.
+Make learning vocabulary easier. Add words, save and load lists, test yourself with 3 types of texting.
 
 ### About
 My very old and clumsy project, which works, at least.
